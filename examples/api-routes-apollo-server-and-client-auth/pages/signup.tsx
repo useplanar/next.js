@@ -17,24 +17,29 @@ const SignUpMutation = gql`
 `
 
 function SignUp() {
-  const [signUp] = useMutation(SignUpMutation)
-  const [errorMsg, setErrorMsg] = useState()
+  const [errorMsg, setErrorMsg] = useState(null)
   const router = useRouter()
 
-  async function handleSubmit(event) {
+  const [signUp] = useMutation(SignUpMutation, {
+    onError: (error) => {
+      setErrorMsg(getErrorMessage(error))
+    },
+    onCompleted: () => {
+      router.push('/signin')
+    },
+  })
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    const emailElement = event.currentTarget.elements.email
-    const passwordElement = event.currentTarget.elements.password
+    const { email, password } = event.target.elements
 
     try {
       await signUp({
         variables: {
-          email: emailElement.value,
-          password: passwordElement.value,
+          email: email.value,
+          password: password.value,
         },
       })
-
-      router.push('/signin')
     } catch (error) {
       setErrorMsg(getErrorMessage(error))
     }
@@ -55,7 +60,7 @@ function SignUp() {
         <Field
           name="password"
           type="password"
-          autoComplete="password"
+          autoComplete="new-password"
           required
           label="Password"
         />
