@@ -22,8 +22,7 @@ const Index = () => {
     if (shouldRedirect) {
       router.push('/signin')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldRedirect])
+  }, [shouldRedirect, router])
 
   if (error) {
     return <p>{error.message}</p>

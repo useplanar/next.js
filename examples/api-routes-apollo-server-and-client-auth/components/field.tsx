@@ -1,13 +1,13 @@
 export default function Field({ name, label, type, autoComplete, required }) {
   return (
     <div>
-      <label id={[name, 'label'].join('-')} htmlFor={[name, 'input'].join('-')}>
-        {label} {required ? <span title="Required">*</span> : undefined}
+      <label htmlFor={`${name}-input`} id={`${name}-label`}>
+        {label} {required && <span title="Required">*</span>}
       </label>
       <br />
       <input
         autoComplete={autoComplete}
-        id={[name, 'input'].join('-')}
+        id={`${name}-input`}
         name={name}
         required={required}
         type={type}
